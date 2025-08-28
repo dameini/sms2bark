@@ -26,7 +26,7 @@
         <service
             android:name=".core.ForegroundKeepAliveService"
             android:exported="false"
-            android:foregroundServiceType="none" />
+            android:foregroundServiceType="dataSync" />
 
         <receiver
             android:name=".sms.SmsReceiver"
