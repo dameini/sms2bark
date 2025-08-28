@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
         tvLast.text = getSharedPreferences("app", MODE_PRIVATE).getString("last_push", "(无)")
         updateStatus()
 
-        // Fix for Android 12+ dynamic broadcast receiver security exception
+        // 修复：针对 Android 12+ 动态注册广播接收器的安全异常
         val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContextCompat.RECEIVER_NOT_EXPORTED
         } else {
