@@ -1,4 +1,3 @@
-
 package com.jianpeng.sms2bark
 
 import android.Manifest
@@ -50,7 +49,13 @@ class MainActivity : ComponentActivity() {
         tvLast.text = getSharedPreferences("app", MODE_PRIVATE).getString("last_push", "(无)")
         updateStatus()
 
-        registerReceiver(lastPushReceiver, IntentFilter("com.jianpeng.sms2bark.LAST_PUSH_UPDATED"))
+        // Fix for Android 12+ dynamic broadcast receiver security exception
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        } else {
+            0
+        }
+        registerReceiver(lastPushReceiver, IntentFilter("com.jianpeng.sms2bark.LAST_PUSH_UPDATED"), flags)
 
         requestAllPermissions()
     }
