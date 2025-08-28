@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK1
 on:
   workflow_dispatch:
   push:
@@ -18,23 +18,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      # 安装 Android SDK（命令行工具 + 必需包）
-      - name: Setup Android SDK
+      - name: Install Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK packages
+      - name: Accept Licenses and Install SDK Packages
         run: |
           yes | sdkmanager --licenses
-          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-      # 没有 gradlew 也能构建（由 action 提供 Gradle 8.7）
-      - name: Build APK (Debug)
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: 8.7
-          arguments: :app:assembleDebug
+      - name: Build APK
+        run: |
+          ./gradlew :app:assembleDebug || gradle :app:assembleDebug --gradle-version 8.7
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Sms2Bark-APK
